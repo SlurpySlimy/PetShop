@@ -1,0 +1,653 @@
+#include <iostream>
+int TotalPetNumber = 0; // each time one restarts via a 'victory' this number increases
+char CurrentPets[7] = {'-', '-', '-', '-','-', '-','\0'}; 
+char PetNames[7] = {'R', 'A', 'J', 'B','V', 'C','\0'}; 
+char UnCapitalPetNames[7] = {'r', 'a', 'j', 'b','v', 'c','\0'}; 
+int money = 20;  
+int PetFood[3] = {0, 0, 0};
+int water = 0;
+int time = 60; // Will loop from 1000 to 0, once it hits zero it will 'restart' the day
+int randarr[155];
+int randarr2[221]; // to emulate randomness 3 variables are needed for 'garbage' that comes out from a system
+int rand;
+bool Failure;
+int days=0;
+int vists=0;
+
+
+void You_broke_This() {cout<<"Lobster does not support a method to fix wrong input, shoulve been more carful bucko, now you're stuck here";
+  You_broke_This();
+                      }
+
+
+void Non_app_choice() {
+ cout << endl << endl << "Not an Option, please chose again" << endl << endl;
+}
+
+char char_choose() { 
+	char char_choice;
+  cin.clear();
+ 	cin >> char_choice;
+  if (char_choice == '-') { /// henceforth rather than causing complications this dash will be used for inappliable space and choices
+    Non_app_choice(); 
+    char_choose();} 
+	else {return char_choice;}
+}
+
+int num_choose() {
+	int num_choice;
+  cin >> num_choice;
+  if (cin.fail()) {You_broke_This();
+     return 99;}
+	else {return num_choice;}
+}
+
+bool PetRoster(char PetInitial) { // selecting a pet
+ for (int i = 0; i < 7; i++) {
+    if (CurrentPets[i] == PetInitial and PetInitial != '-') {}}}
+
+
+void PetFoodReport() {
+  cout << PetFood[1] << " "<<PetFood[2] << " " <<PetFood[3];
+                      }
+
+
+void StatReport() {
+cout<<"You currently have $" << money << endl << "Pet Food stock: "; PetFoodReport(); cout << endl << "Water: " << water << endl << endl;}
+
+class pet { 
+  private: 
+bool dead;
+int saturation; // all stats 1-100 
+int hydration;
+int energy;
+int health;
+int mental_health;
+int condition; // Conidition will have 5 states,0 sleeping,1 awake,2 Happy,3 enraged,4 sad
+int BedQuality = 0; 
+int TimeCounter = 0;
+  
+  
+void ConditionDescription() {
+  rand += 1;
+	if (condition == 0) {
+  	if ((randarr[rand] % 2) > 1) {cout<<endl<<endl<<"They are sleeping soundly";}
+    else {cout<<endl<<endl<<"light breathing comes from their chest";}
+  }
+  if (condition == 1) {
+  	if ((randarr[rand] % 2) > 1) {cout<<endl<<endl<<"They are staring up at you questioningly";}
+    else {cout<<endl<<endl<<"They are going around aimlessly";}
+  }
+  if (condition == 2) {
+    	if ((randarr[rand] % 2) > 1) {cout<<endl<<endl<<"They excitedly bounce around";}
+    else {cout<<endl<<endl<<"They shake their whole body like a dance";}}
+  if (condition == 3) {
+    	if ((randarr[rand] % 2) > 1) {cout<<endl<<endl<<"Only fury and descruction burn in their eyes.";}
+    else {cout<<endl<<endl<<"Something bad might happen to you if you dont do something..";}}
+  if (condition == 4) {
+    	if ((randarr[rand] % 2) > 1) {cout<<endl<<endl<<"They weep around in a corner.";}
+    else {cout<<endl<<endl<<"They hang their head in sorrow.";}}
+
+}
+  
+  public:
+  // Each pet will henceorth be refered to by ID #.
+bool Death() {
+	if (health <= 0 || hydration <= 0 || saturation <= 0 || mental_health <= 0) {return true;}
+  else return false;}
+
+bool sleep() {if (energy <= 0) {condition = 0; return true;}
+             else return false;}
+  
+void TimePassing(int TimePassed) {
+	if (randarr[rand] > 20) {
+  	saturation -= (difficulty*(randarr2[rand]/10)*((TimePassed)));
+    energy += ((randarr[rand]/10)/difficulty)*((TimePassed)/20);
+    health -= (difficulty*rand/5)*((TimePassed)/20);
+    hydration -= (difficulty*difficulty/rand)*((TimePassed)/20);
+    mental_health -= (difficulty+10)*((TimePassed)/20);
+    if (randarr2[rand] % 2 == 0) {rand += 1;}
+    else {rand-=1;}
+  	if (Death()) {dead = true;}
+  
+  
+  }  
+	rand += 1;
+}
+  
+void Reset() {
+  if (dead!=true) {
+	energy = 100;
+  condition = 1;}
+  
+}
+  
+void PetInfo() {
+}
+  
+char pet_chosen;
+int difficulty; // equivalent to star
+ 
+int RandIsValidHigh(int array) { // for high values like 90
+	bool valid = true;
+  while (valid = true) {
+  if ((randarr[array]+20/difficulty) > 100 - (difficulty*10)) {
+		valid = false;  
+    return (randarr[array]+20/difficulty);}
+  else {
+  	array += array;
+  }}
+}
+int RandIsValidLow(int array) { // for low values like 20 or smth
+	bool valid = true;
+  while (valid = true) {
+  if (randarr[array]-20/difficulty < 100 - (difficulty*10)) {
+		valid = false;  
+    return (randarr[array]-20/difficulty);}
+  else {
+  	array += array;
+    cout << array;
+  }}
+}
+  
+void initialize() {
+	saturation = RandIsValidHigh(difficulty+1);
+  energy = RandIsValidHigh(difficulty+61);
+  health = RandIsValidHigh(difficulty+32);
+  hydration = RandIsValidHigh(difficulty+15);
+  mental_health = RandIsValidHigh(difficulty+22);
+  if (difficulty ==	10) {condition = 3;}
+  dead = false;
+  
+  
+}
+
+ 
+	bool Report_Characteristics() 
+  {if (dead==true) {
+    cout<<endl<<"dead."<<endl; Failure = true; return false;}
+   cout << "Rated a " << difficulty << " star pet." << endl
+    << "Saturation: " << saturation << endl
+    << "Hydration: " << hydration << endl
+    << "Energy: " << energy << endl 
+    << "Health: " << health << endl
+    << "Mental Health: " << mental_health << endl
+    << endl;  
+  	return true;
+  } 
+
+  bool FeedPet() { //  The following are all bool to deterime whenever they are sucessfull
+    if (dead==true) {Failure = true; return false;} 
+    cout<<endl << "Which type of pet food? 1 2 3?";
+    int FeedPetTemp = num_choose();
+  	if (FeedPetTemp==99) {return true;}
+	if (PetFood[FeedPetTemp-1] > 0 and FeedPetTemp != 4){
+    	PetFood[FeedPetTemp] -= 1;
+      saturation += (20/difficulty)*FeedPetTemp*FeedPetTemp;
+      if (saturation > 100) {saturation=100;}
+      cout << endl << "Pet Food Stock now: "; PetFoodReport();
+    }
+    else {cout<<"No pet food left or not an option, go buy some brokie"<<endl<<endl;}
+    return true;
+  }
+  bool HydratePet()
+  {if (dead==true) {Failure = true; return false;}
+    if (water > 2*difficulty){ 
+    cout << endl << "Pouring water... Taking a sip... Done!" << endl<< endl;
+   	water -= 2*difficulty;
+    hydration += 60/difficulty;
+    if (hydration > 100) {hydration=100;}
+  }
+   else {
+  	cout << endl<<endl<<"Pay bills. Brokie";}  
+		return true;
+  }
+  bool PlayPet()
+  {if (dead==true) {Failure = true; return false;}
+    if (energy > 5*difficulty and condition != 0){
+    mental_health += 20/difficulty;
+   energy -= 5*difficulty;
+    if (mental_health > 100) {mental_health=100;}
+   if (condition == 5) {condition=3;}
+  cout << endl << endl << "You play with your pet and enjoy some valuable leasuire time."<<endl<<endl;
+  }
+   
+   else if (condition = 4) {cout<<endl<<endl<<"Pet is enraged with you! Cannot complete action"<<endl<<endl;}
+   else if (energy < 5*difficulty) {cout<<endl<<endl<<"Requires more energy"<<endl;}
+   else if (condition = 0) {cout<<endl<<endl<<"They're sleeping idiot."<<endl<<endl;}
+   else {cout<<"something is dearly wrong, youve made a wrong turn player!";}
+	 return true;
+   
+  }
+  bool RestPet() 
+  {if (dead==true) {Failure = true; return false;}
+    if (condition != 0) {condition = 0;
+   energy += 100 - 2*difficulty;
+   if (energy > 100) {energy=100+BedQuality;}   }
+		else {cout<<endl<<endl<<"Already sleeping dingus"<<endl<<endl;};
+   return true;
+  }
+  
+  bool PetAction() {
+    if (dead==true) {Failure = true; return false;}
+  	while (true) {cout<<endl<<endl<<"Choose an action to do to your pet. '0' for exit"<<endl<<endl
+      <<"Options Feed Pet (1), Hydrate Pet (2), Play Pet(3), Rest Pet(4).";
+    int PetActionTemp = num_choose();
+if (PetActionTemp ==99) {return false;}
+    if (PetActionTemp == 1) {return FeedPet();}
+    else if (PetActionTemp == 2) {return HydratePet();}
+    else if (PetActionTemp == 3) {return PlayPet();}
+    else if (PetActionTemp == 4) {return RestPet();}
+    else if (PetActionTemp == 0) {return false;}
+    else {Non_app_choice();}
+                 }
+  
+  }
+  
+
+};
+pet pets[6]; 
+/* From the First pet onwards it wil be logged. if one has only one pet they cant acess the others as pet "-" is not a
+valid pet entry. CurrentPets[i] will return a character such as 'r', hence when pets[i] is accessed it will access the first
+pet obtained. we can just detail the pet the moment one gets it. 
+
+*/
+class scenes { 
+private: // for actionable things within the public 
+bool PetIsInStore(char PetInitial) { // selecting a pet
+ for (int i = 0; i < 7; i++) 
+   {if (PetNames[i] == PetInitial) {
+      CurrentPets[i] = PetNames[i]; 
+      if (i == 6) {pets[i].difficulty = 10;}
+     	else {pets[i].difficulty = i+1;}
+     cout << endl<<endl << "Please wait for 'randomization' of pet" <<CurrentPets<< endl<<endl;
+     	pets[i].initialize();
+      PetNames[i] = '-';
+     	UnCapitalPetNames[i] = '-';
+      return true;}
+   else if (UnCapitalPetNames[i] == PetInitial) 
+   				{cout << endl << endl <<"The owner replies: You know its disrespectful to not capitalize something's name right? Lets try that again";
+					return false;}   
+   }
+  Non_app_choice();
+  
+}
+  bool WorkScene() {
+  	rand += randarr[rand-23]-randarr2[rand+23];
+    if ((rand*rand)-12 <= 26) {
+    cout<<"Day is never finished,"<<endl<< 
+      "Master got me working"<<endl<<
+			"Someday Massa set me free..."<<endl<<endl<<
+      "money + $75";
+      money +=100;
+    }
+    else if ((rand+2)%5 == 0 && (rand+2) > 14) {
+    cout<<"You're pretty sure your coworker"<<endl<<
+      "is flirting with you."<<endl<<
+      "Unfortunately you have no game."<<endl<<
+      "she gives you $30 adding to your paycheck"<<endl<<endl<<"+$50"<<endl;
+      money += 50;
+    }
+    else if (rand%2 == 0) {
+    cout<<"You work and work, for such a small amount,"<<endl<<
+      "you curse this economy but can't really do anything"<<endl<<endl<<
+      "+$10";
+    }
+    else if (rand%2 != 0) {
+    cout<<endl<<"'What would happen if my boss died?'"<<endl
+      << "Along with other intrustive thoughts"<<endl<<
+      "cross your mind, though its probably best"<<endl<<
+      "that you never act on it"<<endl<<endl<<
+      "+$10";
+    }
+  
+  
+  }
+  bool OutsideScene() {
+  	rand -= randarr2[rand+1];
+    if ((rand*rand)-12 <= 16) {
+    cout<<"You could've sworn you saw the"<<endl<<
+      "Magician from the store walk by,"<<endl<<
+      "but upon confronting him, it turned"<<endl<<
+      "out to just be a werid guy."<<endl<<endl<<
+      "He seems high... He gives you a 8 pack of alchol"<<endl<<
+      "Seems to be water that looks like alchol though"<<endl<<
+      "He must really be high..." <<endl<<endl<<
+      "+ 8 water"<<endl<<endl;
+      water+=8;
+    
+    }
+    else if ((rand+2)%5 == 0) {
+    cout<<"You meet a dog, it puts out its paw."<<endl<<
+      "You hold your hand out and..."<<endl<<
+      "?! The dog gives you 50$??"<<endl<<
+			"You attempt to interrogate the dog," <<endl<<
+      "but it provides no answer and the"<<endl<<
+      "owner soon arrives."<<endl<<endl<<"+50$?"<<endl<<endl;
+      money += 50;
+    }
+    else if (rand%2 == 0) {
+    cout<<"You look at the people walking by, they're all strangers."<<endl<<endl;
+    }
+    else if (rand%2 != 0) {
+    cout<<"You go outside and taste the fresh air, its nice."<<endl<<endl;
+    }
+    
+    cout<<"After you head to the plaza, you question where to go."<<endl<<endl;
+    bool OutsideVar=true;
+    while (OutsideVar) {
+    cout<<endl<<endl<<"Options: (0) exit plaza (1) The Casino. (2) Alice's Allusions. (3) Look for a different job."<<endl;
+    int OutsideChoice = num_choose();
+	if (OutsideChoice == 99) {OutsideVar=false;}
+  	if (OutsideChoice == 1) {
+    	cout<<endl<<endl<<"You arrive at the entrance, the bouncer requests a membership card."<<endl<<
+        "He also states that it would be way to complicated to"<<endl<<
+        "add gambling and also its not that type of game."<<endl<<endl<<
+        "whatever that means..";
+    }
+			else if (OutsideChoice == 2) {
+				cout<<endl<<endl<<"And then just like a certain game, you encounter a lady"<<endl<<
+          "working the counter and hit it off with her"<<endl<<
+          "though unlike the game, this path slowly turns into"<<endl<<
+          "a dating sim that has 15 endings." <<endl<<endl<<
+          "Yeah not happening, just go back inside your house.";
+
+}
+  			else if (OutsideChoice == 3) {
+				cout<<endl<<endl<<"In this economy??"<<endl;
+}
+  		else if (OutsideChoice == 0) {OutsideVar=false;}
+    }
+  
+  }
+  bool StoreScene() {
+    bool store = true;
+    while (store) {
+  	cout<<endl<<endl<<"You arrive in a store, theres some stuff to buy, not much though. You suppose thats what poverty is like."<<endl
+      << "Theres multiple isles and options, 0 for exit, 1: low quality Pet Food (10$), 2: Pet Food (20$), 3: Expensive Pet Food (50$) 4: 12 Water bottles (10$), 5: An inflation-driven energy drink (35$) "<<endl<<endl;
+    int StoreActionTemp = num_choose();
+     if (StoreActionTemp == 1) {
+       if (money >= 10) {PetFood[0] += 1;}
+     else {cout<<endl<<"Brokie"<<endl;}}
+    else if (StoreActionTemp == 2) {
+      if (money >= 20) {PetFood[1] += 1;}
+     else {cout<<endl<<"Brokie"<<endl;}}
+    else if (StoreActionTemp == 3) {
+    if (money >= 50) {PetFood[2] += 1;}
+     else {cout<<endl<<"Brokie"<<endl;}}
+    else if (StoreActionTemp == 4) {
+    if (money >= 10) {water += 12;}
+     else {cout<<endl<<"Brokie"<<endl;}}
+    else if (StoreActionTemp == 0) {
+      store = false;}
+    else {Non_app_choice();}
+  }}
+  
+public:
+  bool TimeOut(int TimeSpent) {
+  time -= TimeSpent;
+  if (time < 0) {
+  cout << "You feel sleepy so you hit the hay, heading back to your house and going to sleep." << endl << endl << "... zzz ...";
+	for (int i = 0; i < 7; i++) {
+  	if (CurrentPets[i] != '-' && i !=7) {
+    pets[i].TimePassing(TimeSpent); pets[i].Reset();}}
+  cout<<endl<<endl<<"You wake up to a new day.";
+  days += 1;
+  time = 60;
+  return true;}
+  else {
+    for (int i = 0; i < 7; i++) {
+  	if (CurrentPets[i] != '-' && i != 7) {
+    pets[i].TimePassing(TimeSpent);}}
+  	cout<<endl<<TimeSpent<< " units o' time has been spent, remaining: "<<time<< endl; 
+  return false;} 
+    
+}
+  
+  bool restart() {
+  	cout << endl << endl << "Restart? Y/N";
+    char NoYes; // I know this is conusing but this is a separate function that asseratains if you want to restart not a choice confrimation
+    cin >> NoYes;
+    if (NoYes == 'y' or NoYes == 'Y') 
+    {return true;}
+    else if (NoYes == 'n' or NoYes == 'N') 
+    {return false;}
+    else
+    {Non_app_choice();
+      restart();}
+  											}
+  bool confirmation() {
+  	char YesNo;
+    cout << endl << endl << "Are you certain this is your choice?" << endl << "Y/N?";
+    cin >> YesNo;
+    if (YesNo == 'y' or YesNo == 'Y') {
+      return true;
+    }
+    else if (YesNo == 'n' or YesNo == 'N') {
+      return false;
+    }
+    else{
+    	Non_app_choice();
+      confirmation();
+    }
+  									 }
+  
+  void Introduction() {
+  bool introVar = true;
+  while (introVar) {
+  int num = num_choose();
+  if (num == 1) { 
+	cout << endl << endl << "Ralph, a large blue dog. 1 Star" << endl <<
+    "Alice, a little green bird. 2 Star" << endl <<
+		"Jeff, a land shark. 3 Star" << endl <<
+    "VERK, the destoryer of worlds. 4 Star" << endl <<
+    "Bob, a human..?? 5 Star" << endl <<
+    "Charlie, a black infant dragon with a blue nose. ??? star" << endl << endl <<
+    "Make a choice with the first letter of the pet's name" << endl; introVar=false;  
+  }
+  else if (num == 2 or num == 99) {
+   cout << endl << endl << "You turn around, and decide that pets aren't for you. Eventually you pass by the store once more, or at least where it used to be..." << endl <<
+     " The store is no longer there, but what remains is a empty lot of grass, a notice is posted to the door" << endl << endl <<
+     " This store can no longer sustain the animals and pets within, it is with a heavy heart that I have to inform prospective owners that all the pets..." << endl <<
+     " ... Have gone to a better place, I hope there they can find peace..." << endl << endl << endl
+     << "GAME OVER";introVar=false;}
+  else {
+  	Non_app_choice();}
+  }		}
+  
+  
+  void S2() { //Scene is already declared in scenes, S2 stands for scene but its kinda redundant lol!
+    bool S2Var = true;
+    while (S2Var) {
+    char temp = char_choose();
+    if (PetIsInStore(temp) ) {
+      TotalPetNumber++;
+      cout << "The man at the counter unlocks the chamber with your pet, he places it on the floor and it walks toward you." << 
+        endl << "You leave the store, walking out to the front with your pet"
+       << " You turn back around, and see the store gone. An ordinary empty building stands in its place" << endl << endl 
+        << "your Current Roster is now: " << TotalPetNumber << " Containing Current Pets:" << CurrentPets;
+      S2Var = false;}
+    else
+    {cout << endl << "Not applicable, choose differently";}} }							
+bool PetRosterInfo() {
+  if (Failure) {return false;}// this function doesnt really care what one returns.
+  cout << endl << endl << "Current pet roster is as following:" << CurrentPets << endl << endl << "select a pet with its initial or '/' to back out.";
+  char PetRosterInfoTemp = char_choose();
+  bool FoundPet = false;
+	if (PetRosterInfoTemp == '/') {return false;}
+  else {
+    for (int i = 0; i < 7; i++) {
+    if (CurrentPets[i] == PetRosterInfoTemp) {pets[i].Report_Characteristics();
+      if (pets[i].PetAction()==false) {return PetRosterInfo();} break;}//finding if the pet does exist in roster
+      //calling thus pet action in the pet subclass
+  else if (!FoundPet and i == 6) {Non_app_choice(); if (PetRosterInfo()) {return true;}}//true proprogates up to the origina, home and results in home being called
+  														  } 			
+  } }
+  
+  void Visitation() {
+  cout<<endl<<endl<<endl<<"Its been a while since you recieved your pet."<<endl<<
+    "it so happens that you walk by the same place again,"<<endl<<
+    "and like magic, the store is there already."<<endl<<
+    "You see the desperate pets in the windows, clutching"<<endl<<
+    "your own, you push the door open."<<endl<<
+    "The owner looks up happily to see you."<<endl<<
+    "The store seems much less dreary and spooky than"<<endl<<
+    "the last time, its not like you even"<<endl<<
+    "gave him any money, so how..?"<<endl<<endl<<
+    "   'Heh heh, thanks to you things have been"<<endl<<
+    "   looking up for all these fellas! Thank you."<<endl<<
+    "   really! I fixed up the shop a little, its"<<endl<<
+    "		nicer now, no? Anyways did you want to adopt"<<endl<<
+    "		another one? You did so well with this, im"<<endl<<
+    "   sure it will be the same! So wont you take"<<endl<<
+    "   another one?'";
+  bool vistLoop = true;
+  while (vistLoop) {
+  cout<<endl<<endl<<"(1) Yeah, sure... (2) Nah I'm good";
+  int num2 = num_choose();
+  if (num2 == 1) { 
+	cout << endl << endl << "Ralph, a large blue dog. 1 Star" << endl <<
+    "Alice, a little green bird. 2 Star" << endl <<
+		"Jeff, a land shark. 3 Star" << endl <<
+    "VERK, the destoryer of worlds. 4 Star" << endl <<
+    "Bob, a human..?? 5 Star" << endl <<
+    "Charlie, a black infant dragon with a blue nose. ??? star" << endl << endl <<
+    "Make a choice with the first letter of the pet's name" << endl;  
+    vistLoop=false;
+		S2();    }
+  else if (num2 == 2 or num2==99) {Failure = true;
+    cout<<endl<<endl<<"..."<<endl<<
+      "The magician pauses, his smile falters for a second."<<endl<<
+      "But he regains composure, and says"<<endl<<endl<<
+      "    'Thats fine... I mean... you are sure right?"<<endl<<
+      "			well, regaudless.. you arent exactly"<<endl<<
+      "     what I hoped for... Well fine then"<<endl<<
+      "     , just go home.' "<<endl;
+      cout<<endl<<endl<<"And so like that you left the store, heading home."<<endl<<
+        "Similar to the first time, the store dissappears."<<endl<<
+        "You pick up your pace to your house...";
+      vistLoop=false;}
+   else {Non_app_choice();} }
+  }
+
+void Consequences() {
+	cout<<endl<<endl<<endl<<endl<<endl<<endl
+    <<"                    ..?"<<endl<<endl<<endl<<
+  	"    You hear a knock at your door."<<endl<<endl<<  
+    "a familiar voice rings out beyond the door. "<<endl<<
+		"              Its him."<< endl<< 
+    "            The Magician"<<endl<<endl<< 
+    "But its different this time, his voice"<<endl<<
+    "is pratically fried and grumbling"<<endl<<
+    "like the deepest abyss. Its dripping"<<endl<<
+    "              with malice..." << endl<<endl<<endl<<
+    "'When we first met, I thought you"<<endl<<
+    "would do a diligent job..."<<endl<<
+    "But now..? Look at what you've done"<<endl<<
+    "and to think I wouldn't notice..?"<<endl<<
+		"Well... Does that matter now?'"<< endl<<endl<<endl<<
+    "Slowly... Your front door handle creaks"; cout<<endl<<
+    "The door handle groans as the force"<<endl<<
+    "of the Magician's grip decimates it"<<endl<<
+    "The hindges on the door snap."<<endl<<
+    "A foot comes through the crack in "<<endl<<
+    "the door, and the figure its attached to..."<<endl<<
+  	"is the Magician, The keeper of the pets,"<<endl<<
+    "            A great unknown."<<endl<<
+    "You step back, but by then the Magician "<<endl<<
+    "has already fully stepped into the house."<<endl<<endl<<
+    "He looks up at you, his hair swaying"<<endl<<
+    "at a shoulder's length despite the "<<endl<<
+    "lacking draft in the room. His hair"<<endl<<
+    "sways to reveal two crimson red eyes."<<endl<<
+    "He takes off his Magician's hat to his"<<endl<<
+    "chest, and bows. A deep bow. A somber bow."<<endl<<
+    "         A bow full of resentment"<<endl<<endl<<
+    "And his hair darkens to an unnatural void."<<endl<<
+    "         Colors shift to swirls,"<<endl<<
+    "         As the world whirls,"<<endl<<
+    "         White gets whiter,"<<endl<<
+    "         Black gets blacker,"<<endl<<
+    "And the world before you gets engulfed"<<endl<<
+		"in red. Crimson red. Just for a second,"<<endl<<    
+    "and a moment. It flashes until everything"<<endl<<
+    "	     	..."<<endl<<
+    "is over..."<<endl<<endl<<endl<<endl<<endl<<
+      "GAME OVER, You could not bear the weight "<<endl<<
+      "of your responsibility.";
+      
+  
+}
+  
+  
+void Home() { // a gameplay loop lasts or 1 day.
+  bool GameplayLoop = true;
+  while (GameplayLoop) {
+  if (Failure) {GameplayLoop = false; Consequences(); break;}
+  if (days/10 == 1 && vists == 0) {Visitation(); vists+=1;}
+  else if (days/10 == 1 && vists == 0) {Visitation(); vists+=1;}
+  else if (days/10 == 1 && vists == 0) {Visitation(); vists+=1;}
+  cout << "What would you like to do today?" << endl << endl << "Options: Select pet (1), Go to the store (2), Go outside (3), Work (4), Stat Report (5)";
+  int HomeChoice = num_choose();
+  if (HomeChoice == 1) {
+  	if (TimeOut(2)) {}
+    else if (PetRosterInfo()) {}}
+	else if (HomeChoice == 2) {
+    if (TimeOut(10)) {}
+  	else if (StoreScene()) {} }
+  else if (HomeChoice == 3) {
+    if (TimeOut(20)) {}
+  	else if (OutsideScene()) {} }
+  else if (HomeChoice == 4) {
+    if (TimeOut(40)) {}
+  	else if(WorkScene()) {}}
+    else if (HomeChoice == 4) {StatReport();}
+  else if (HomeChoice == 67) {pets[0].dead=true;}
+  else if (HomeChoice == 99) {GameplayLoop = false;}
+  else {Non_app_choice();}
+  
+   
+  }}
+  
+  
+
+  
+  
+  
+  
+};// for the scenes class
+
+
+int main() {
+  bool playing = true;
+  Failure = false;
+  while (playing) {
+  cout << "You arrive one day to a mysterious new pet store,"<<endl<< "it's sign slightly faded despite you never seeing it before." << endl
+    << "Walking through the front door you are fascinated by the almost magical inside,"<<endl<< "exotic pets and animals are in glass containers and custom enviroments."
+    << endl << "The owner is a man wearing a magician's outfit. He speaks eloquently," << endl << endl <<
+    "Aha! A new guest, come take a look at my animals! One of them can be yours, you don't have to pay either!" << endl <<
+    "ah... but if something happens to one of my precious animals... Well I'm sure that won't happen!" << endl <<
+    " Choose a creature, the higher the star the higher the difficulty of care! ' " << endl << endl << "choose an option" << endl<< "1 - Look at the pets list" << endl << "2 - leave the store because you can't handle responsibility"; 
+ scenes instance;
+    instance.Introduction();
+  instance.S2();
+  cout << endl << endl << "CONGRATS, you now have a new pet." << endl << endl << "You arrive home and greet your pet. " << endl
+<< endl << "You currently have $" << money << endl << "Pet Food stock: "; PetFoodReport(); cout << endl << "Water: " << water << endl << endl;
+    instance.Home();
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  if (!instance.restart()) {
+    	playing = false;
+      cout << endl << "See you next time!";
+    }}}
